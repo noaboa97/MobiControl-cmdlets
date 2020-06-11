@@ -43,42 +43,48 @@
 
     #>
 
- Param (
-     [parameter(valuefrompipeline = $true, mandatory = $true, HelpMessage = "Enter Authentication Token", Position = 0)]
-     [string]$Token,
-     [parameter(valuefrompipeline = $true, mandatory = $true, HelpMessage = "Enter group name", Position = 1)]
-     [string]$Name,
-     [parameter(valuefrompipeline = $true, mandatory = $true, HelpMessage = "Enter Path", Position = 2)]
-     [string]$Path,
-     [parameter(valuefrompipeline = $true, mandatory = $true, HelpMessage = "Choose Icon", Position = 3)]
-     [ValidateSet("None", "Yellow", "Red", "Green", "Blue", "Purple", "Cyan")]
-     [string]$Icon,
-     [parameter(valuefrompipeline = $true, mandatory = $true, HelpMessage = "Choose groups kind/type", Position = 4)]
-     [ValidateSet("Regular", "Virtual")]
-     [string]$Kind
-   )
+    Param (
+        [parameter(valuefrompipeline = $true, HelpMessage = "Enter Authentication Token", Position = 0)]
+        [string]$Token,
+        [parameter(valuefrompipeline = $true, mandatory = $true, HelpMessage = "Enter group name", Position = 1)]
+        [string]$Name,
+        [parameter(valuefrompipeline = $true, mandatory = $true, HelpMessage = "Enter Path", Position = 2)]
+        [string]$Path,
+        [parameter(valuefrompipeline = $true, mandatory = $true, HelpMessage = "Choose Icon", Position = 3)]
+        [ValidateSet("None", "Yellow", "Red", "Green", "Blue", "Purple", "Cyan")]
+        [string]$Icon,
+        [parameter(valuefrompipeline = $true, mandatory = $true, HelpMessage = "Choose groups kind/type", Position = 4)]
+        [ValidateSet("Regular", "Virtual")]
+        [string]$Kind
+    )
 
-#Header with Token Authorization
-$Header = @{}
-$Header["Authorization"] = "Bearer " + $Token
+    if($Token -eq ""){
+    
+        $Token = Get-MCToken
+    
+    }
+
+    #Header with Token Authorization
+    $Header = @{}
+    $Header["Authorization"] = "Bearer " + $Token
 
 
-#JSON Request to the API
-$Body = @{}
-$Body["Name"]=$Name
-$Body["Path"]=$Path+$Name
+    #JSON Request to the API
+    $Body = @{}
+    $Body["Name"]=$Name
+    $Body["Path"]=$Path+$Name
 
-    #Device Group Icon ['Yellow', 'Red', 'Green', 'Blue', 'Purple', 'Cyan', 'None']
-$Body["Icon"]=$Icon
+        #Device Group Icon ['Yellow', 'Red', 'Green', 'Blue', 'Purple', 'Cyan', 'None']
+    $Body["Icon"]=$Icon
 
-    #Device group kind ['Regular', 'Virtual']
-$Body["Kind"]=$Kind
+        #Device group kind ['Regular', 'Virtual']
+    $Body["Kind"]=$Kind
 
-#Convert hash table to JSON
-$Body = $Body | ConvertTo-Json
+    #Convert hash table to JSON
+    $Body = $Body | ConvertTo-Json
 
-#API Request
-$response = Invoke-restmethod -Uri https://$MCFQDN/mobicontrol/api/devicegroups -ContentType "application/json" -Method POST -Headers $Header -Body $Body
+    #API Request
+    $response = Invoke-restmethod -Uri https://$MCFQDN/mobicontrol/api/devicegroups -ContentType "application/json" -Method POST -Headers $Header -Body $Body
 
-return $response
+    return $response
 }
