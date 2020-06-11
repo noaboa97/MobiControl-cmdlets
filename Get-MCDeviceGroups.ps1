@@ -3,20 +3,20 @@
     <#
 
     .SYNOPSIS
-    Gets MobiControl device groups 
+    Gets all MobiControl device groups or selected subgroups from parent folder
 
     .DESCRIPTION
-    Gets all MobiControl the device groups if no path is specified
+    Gets all MobiControl the device groups if no path is specified. If a path of a parent groups is specified it gets the child groups.
 
     .PARAMETER Token
-    Create the token with the script or function Get-MCToken and pass it to this function to authenticate with the MobiControl server
+    Create the token with the script or function Get-MCToken and pass it to this function to authenticate with the MobiControl server.  Leave it blank and the function will be called to enter the details.
 
     .PARAMETER parentPath
     Specify the parent group to show the subgroups
     If not specified all device groups will be listed recursively
 
     .OUTPUTS
-    Device group or groups
+    all Device group or sub groups of the specified parent
 
     .NOTES
     Version:        1.0
@@ -31,23 +31,28 @@
     Get-MCDeviceGroups Token Path
 
     .EXAMPLE
-    Get-MCToken -Token jdfdönbvlkö34nlk -Path \\root\subgroup
+    Get-MCDeviceGroup -Token jdfdönbvlkö34nlk -Path \\root\subgroup
 
     #>
 
     Param (
-        [parameter(valuefrompipeline = $true,  mandatory = $true, HelpMessage = "Enter Authentication Token", Position = 0)]
+        [parameter(valuefrompipeline = $true, HelpMessage = "Enter Authentication Token", Position = 0)]
         [string]$Token,
         [parameter(valuefrompipeline = $true, HelpMessage = "Enter parentPath", Position = 1)]
         [string]$parentPath
     )
 
+    if($Token -eq ""){
+    
+    $Token = Get-MCToken
+    
+    }
 
     $Header = @{}
     $Header["Authorization"] = "Bearer " + $Token
 
     if($parentPath -ne $null){
-       $response = Invoke-restmethod -Uri https://$MCFQDN/mobicontrol/api/devicegroups?parentPath=$parentpath -ContentType "application/json" -Method GET -Headers $Header # -Body $Body
+       $response = Invoke-restmethod -Uri https://$MCFQDN/mobicontrol/api/devicegroups?parentPath=$parentpath -ContentType "application/json" -Method GET -Headers $Header
     }
     else{
        $response = Invoke-restmethod -Uri https://$MCFQDN/mobicontrol/api/devicegroups -ContentType "application/json" -Method GET -Headers $Header 
