@@ -1,9 +1,9 @@
 # MobiControl-cmdlets
 PowerShell Cmdlets for MobiControl API
 
-Use Get-Help [functionname or scriptname] -full to checkout parameters and how to use.
+Use ``` Get-Help [functionname or scriptname] -full ``` to checkout parameters and how to use.
 
-Save the .psm in one of the module paths. Check the paths with the variable $env:PSModulePath
+Save the .psm in one of the module paths. Check the paths with the variable ```$env:PSModulePath```
 
 # Examples
 
@@ -12,7 +12,7 @@ If your Server doesn't have a certificate you need to run ```Set-TrustAllCertsPo
 
 ## Get-MCToken
 ```
-#Lokaler User im MobiControl
+#Local user in MobiControl
 $MCUsername = "Username"
 $MCPassword = "Password"
 
@@ -27,7 +27,7 @@ $token = Get-MCToken -MCUsername $MCUsername -MCPassword $MCPassword -MCFQDN $MC
 ```
 ## Get-MCDeviceGroup
 ```
-Get-MCDeviceGroup -Token $toke -Path "\\Root\subgroup"#<---------- without backslash at the end of the path or it will throw an error
+Get-MCDeviceGroup -Token $token -Path "\\Root\subgroup"#<---------- without backslash at the end of the path or it will throw an error
 ```
 ## Get-MCDeviceGroups
 ```
@@ -39,7 +39,7 @@ Add-MCDeviceGroup -Token $token -Name "Groupname" -Icon None -Kind Regular -Path
 ```
 ## Remove-MCDeviceGroup
 ```
-Remove-MCDeviceGroup -Toke $token -Name "Groupname" -Path "\\Root\"
+Remove-MCDeviceGroup -Token $token -Name "Groupname" -Path "\\Root\"
 ```
 ## Get-MCProfiles
 ```
