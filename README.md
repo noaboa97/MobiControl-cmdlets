@@ -8,7 +8,7 @@ Save the .psm in one of the module paths. Check the paths with the variable $env
 # Examples
 
 ## Unsecure WebConsole
-If your Server doesn't have a certificate you need to run Set-TrustAllCertsPolicy first.
+If your Server doesn't have a certificate you need to run ```Set-TrustAllCertsPolicy``` first.
 
 ## Get-MCToken
 
