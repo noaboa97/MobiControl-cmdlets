@@ -11,6 +11,10 @@ Save the .psm in one of the module paths. Check the paths with the variable ```$
 If your Server doesn't have a certificate you need to run ```Set-TrustAllCertsPolicy``` first.
 
 ## Get-MCToken
+
+Follow the instructions of the API to create the clientID and client secret.
+```yourserver/MobiControl/api/docs/index#/```
+
 ```
 #Local user in MobiControl
 $MCUsername = "Username"
